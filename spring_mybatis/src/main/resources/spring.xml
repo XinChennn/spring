@@ -8,6 +8,7 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:property-placeholder location="classpath:db.properties"/>
+    <!-- 声明数据源DataSource -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="driverClassName" value="${jdbc.driverClass}"/>
         <property name="url" value="${jdbc.url}"/>
@@ -15,13 +16,28 @@
         <property name="password" value="${jdbc.password}"/>
     </bean>
 
+    <!-- 声明SqlSessionFactoryBean，在这个类的内部，创建SqlSessionFactory对象，之后就可以获取SqlSession对象 -->
     <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 指定数据源 -->
         <property name="dataSource" ref="dataSource"/>
         <property name="mapperLocations" value="classpath:mapper/*.xml"/>
         <property name="typeAliasesPackage" value="cn.ixinjiu.spring_mybatis.entity"/>
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 指定基本包，dao接口所在的包名 -->
         <property name="basePackage" value="cn.ixinjiu.spring_mybatis.dao"/>
     </bean>
+
+    <!--  userDao  -->
+    <bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="cn.ixinjiu.spring_mybatis.dao.UserDao" />
+        <property name="sqlSessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <!--  UserServiceImpl -->
+    <bean id="userService" class="cn.ixinjiu.spring_mybatis.service.impl.UserServiceImpl"></bean>
+
+
+
 </beans>

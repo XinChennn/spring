@@ -2,12 +2,15 @@ package cn.ixinjiu.spring_mybatis;
 
 import cn.ixinjiu.spring_mybatis.dao.UserDao;
 import cn.ixinjiu.spring_mybatis.entity.User;
+import cn.ixinjiu.spring_mybatis.service.UserService;
+import cn.ixinjiu.spring_mybatis.service.impl.UserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -22,10 +25,18 @@ import java.util.List;
 public class MyTest {
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private UserService userServic;
+
 
     @Test
     public void test(){
         List<User> userList = userDao.findAll();
         userList.forEach(System.out::println);
+    }
+
+    @Test
+    public void testServicee(){
+        System.out.println("userServic = " + userServic);
     }
 }
