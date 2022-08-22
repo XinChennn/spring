@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 切面类 -->
+    <bean id="myAspect" class="cn.ixinjiu.spring_aop.aop.MyAspect"></bean>
+    <!-- 目标类 -->
+    <bean id="target" class="cn.ixinjiu.spring_aop.aop.Target"></bean>
+
+    <!-- 配置aop -->
+    <aop:config>
+        <!-- 切面绑定通知类 -->
+        <aop:aspect ref="myAspect">
+            <!-- 设置切入点 -->
+            <aop:pointcut id="cut" expression="execution(public * save(..))"/>
+            <!-- 通知与切入点的匹配 -->
+            <!-- 前置通知：在方法执行前通知 -->
+            <aop:before method="before" pointcut-ref="cut"></aop:before>
+            <!-- 后置通知：在方法正常执行完成进行通知，可以访问到方法的返回值 -->
+            <aop:after-returning method="after" pointcut-ref="cut"></aop:after-returning>
+            <!-- 环绕通知：可以将要执行的方法（point.proceed()）进行包裹执行，可以在前后添加需要执行的操作 -->
+<!--            <aop:around method="around" pointcut-ref="cut"></aop:around>-->
+            <!-- 异常通知：在方法出现异常时进行通知,可以访问到异常对象，且可以指定在出现特定异常时在执行通知 -->
+            <aop:after-throwing method="throwing" pointcut-ref="cut"></aop:after-throwing>
+            <!-- 最终通知：在目标方法执行后无论是否发生异常，执行通知,不能访问目标方法的执行的结果 -->
+            <aop:after method="end" pointcut-ref="cut"></aop:after>
+        </aop:aspect>
+    </aop:config>
+
+</beans>
